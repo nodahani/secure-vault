@@ -7,3 +7,4 @@ CIPHER_SHIFT = 3
 NOT_NUMBER = "not number"
 INVALID_INPUT = "invalid input"
 STATUS_OK = "ok"
+CONTINUE = "continue"

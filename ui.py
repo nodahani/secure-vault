@@ -60,19 +60,30 @@ def select_file(pure_names, message):
     return pure_names[index - 1]
 
 
-def edit_lines_in_ui(lines, message):
+def edit_lines_in_ui(lines, message, message_want_continue, message_continue):
     """Edit import file lines"""
-
     edit_lines = []
     for line in lines:
         print(line)
         user_input = input(message)
-        if user_input != "":
-            edit_lines.append(user_input)
-        elif user_input == constants.STATUS_BACK:
-            return constants.STATUS_BACK
+        if user_input == constants.STATUS_BACK:
+            return [], constants.STATUS_BACK
         elif user_input == constants.STATUS_EXIT:
-            return constants.STATUS_EXIT
+            return [], constants.STATUS_EXIT
+        elif user_input != "":
+            edit_lines.append(user_input)
         else:
             edit_lines.append(line)
-    return edit_lines
+
+    user_input = input(message_want_continue)
+    if user_input == constants.CONTINUE:
+        list_lines, status = get_user_lines(message_continue)
+        if status == constants.STATUS_BACK:
+            return [], constants.STATUS_BACK
+        elif status == constants.STATUS_EXIT:
+            return [], constants.STATUS_EXIT
+        elif status != "":
+            edit_lines.extend(list_lines)
+        else:
+            return edit_lines, constants.STATUS_SAVE
+    return edit_lines, constants.STATUS_SAVE

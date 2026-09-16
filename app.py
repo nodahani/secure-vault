@@ -71,6 +71,7 @@ def edit_file():
         pure_names,
         "Which file do you want to edit? Select by number, or type 'back' to return, or 'exit' to quit: ",
     )
+
     if selected == constants.STATUS_BACK:
         return constants.STATUS_BACK
     elif selected == constants.STATUS_EXIT:
@@ -81,20 +82,24 @@ def edit_file():
         return constants.NOT_NUMBER
     elif selected == constants.INVALID_INPUT:
         return constants.INVALID_INPUT
-    else:
-        with open("./data/" + selected + ".txt", "r") as file:
-            lines = crypto.caesar_cipher(
-                file.read(), -constants.CIPHER_SHIFT
-            ).splitlines()
-            edit_lines = edit_lines_in_ui(
-                lines,
-                'Type to edit, press Enter to continue, type "exit" to quit, and type "back" to go back:\n',
-            )
 
-        text = "\n".join(edit_lines)
-        with open("./data/" + selected + ".txt", "w") as file:
-            file.write(crypto.caesar_cipher(text, constants.CIPHER_SHIFT))
-            return constants.STATUS_SAVE
+    with open("./data/" + selected + ".txt", "r") as file:
+        lines = crypto.caesar_cipher(file.read(), -constants.CIPHER_SHIFT).splitlines()
+        result, status = edit_lines_in_ui(
+            lines,
+            'Type to edit, press Enter to continue, type "exit" to quit, and type "back" to go back:\n',
+            "You have reached the end of the file. Do you want to continue writing? Type 'continue' or press Enter on a blank line to finish :\n",
+            'Type, press Enter to Save, type "exit" to quit:\n',
+        )
+        if status == constants.STATUS_BACK:
+            return constants.STATUS_BACK
+        elif status == constants.STATUS_EXIT:
+            return constants.STATUS_EXIT
+        elif status == constants.STATUS_SAVE:
+            text = "\n".join(result)
+            with open("./data/" + selected + ".txt", "w") as file:
+                file.write(crypto.caesar_cipher(text, constants.CIPHER_SHIFT))
+                return constants.STATUS_SAVE
 
 
 # def delete_file(file_name):
