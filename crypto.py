@@ -1,13 +1,5 @@
 def caesar_cipher(text, shift):
-    """Encrypt or decrypt a text using Caesar cipher.
-
-    Args:
-        text (str): The text to encrypt or decrypt.
-        shift (int): Number of positions to shift each letter
-
-    Returns:
-        str: The encrypt or decrypt text.
-    """
+    """Encrypt or decrypt a text using Caesar cipher."""
 
     result = ""
     for char in text:

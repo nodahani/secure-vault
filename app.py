@@ -1,6 +1,12 @@
 import crypto
 import constants
-from ui import getting_input_user, get_user_lines, format_file_list, select_file
+from ui import (
+    getting_input_user,
+    get_user_lines,
+    format_file_list,
+    select_file,
+    edit_lines_in_ui,
+)
 from file_manager import file_exist, save_encrypted_file, get_list_files
 
 
@@ -31,11 +37,11 @@ def display_file():
     """Display file titles and the content of the selected file."""
 
     result = ""
-    file_names = get_list_files()
-    print(format_file_list(file_names))
+    pure_names = get_list_files()
+    print(format_file_list(pure_names))
 
     selected = select_file(
-        file_names,
+        pure_names,
         "Which file do you want to see? Select by number, or type 'back' to return, or 'exit' to quit: ",
     )
     if selected == constants.STATUS_BACK:
@@ -56,24 +62,39 @@ def display_file():
         return constants.STATUS_OK
 
 
-# display_file()
+def edit_file():
+    """Edit the file."""
 
-# def edit_file(file_name):
-#     """Edit the file.
+    pure_names = get_list_files()
+    print(format_file_list(pure_names))
+    selected = select_file(
+        pure_names,
+        "Which file do you want to edit? Select by number, or type 'back' to return, or 'exit' to quit: ",
+    )
+    if selected == constants.STATUS_BACK:
+        return constants.STATUS_BACK
+    elif selected == constants.STATUS_EXIT:
+        return constants.STATUS_EXIT
+    elif selected == constants.EMPTY_INPUT:
+        return constants.EMPTY_INPUT
+    elif selected == constants.NOT_NUMBER:
+        return constants.NOT_NUMBER
+    elif selected == constants.INVALID_INPUT:
+        return constants.INVALID_INPUT
+    else:
+        with open("./data/" + selected + ".txt", "r") as file:
+            lines = crypto.caesar_cipher(
+                file.read(), -constants.CIPHER_SHIFT
+            ).splitlines()
+            edit_lines = edit_lines_in_ui(
+                lines,
+                'Type to edit, press Enter to continue, type "exit" to quit, and type "back" to go back:\n',
+            )
 
-#     Args:
-#         file_name (str): The name of the file to edit.
-
-#     Returns:
-#         True
-#     """
-#     with open("./data/" + file_name + ".txt", "r") as file:
-#         lines = crypto.caesar_cipher(file.read(), -3).splitlines()
-#         content = "\n".join(get_multiline_input(lines))
-
-#     with open("./data/" + file_name + ".txt", "w") as file:
-#         file.write(crypto.caesar_cipher(content, 3))
-#         return True
+        text = "\n".join(edit_lines)
+        with open("./data/" + selected + ".txt", "w") as file:
+            file.write(crypto.caesar_cipher(text, constants.CIPHER_SHIFT))
+            return constants.STATUS_SAVE
 
 
 # def delete_file(file_name):

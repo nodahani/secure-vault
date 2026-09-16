@@ -3,6 +3,8 @@ from file_manager import get_list_files
 
 
 def get_user_lines(message):
+    """Accepting and returning multi-line input"""
+
     text = []
     status = constants.STATUS_SAVE
     while True:
@@ -36,7 +38,7 @@ def format_file_list(files):
 
 
 def select_file(pure_names, message):
-    """It takes a number from the user and returns that file."""
+    """It takes a list of raw filenames and a number from the user, and returns the raw name of the corresponding file."""
 
     user_input = getting_input_user(message)
 
@@ -59,14 +61,7 @@ def select_file(pure_names, message):
 
 
 def edit_lines_in_ui(lines, message):
-    """Edit import file lines
-
-    Args:
-        lines (list): list of lines
-
-    Returns:
-        list: List of edited lines
-    """
+    """Edit import file lines"""
 
     edit_lines = []
     for line in lines:
@@ -74,6 +69,10 @@ def edit_lines_in_ui(lines, message):
         user_input = input(message)
         if user_input != "":
             edit_lines.append(user_input)
+        elif user_input == constants.STATUS_BACK:
+            return constants.STATUS_BACK
+        elif user_input == constants.STATUS_EXIT:
+            return constants.STATUS_EXIT
         else:
             edit_lines.append(line)
     return edit_lines

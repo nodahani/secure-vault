@@ -1,11 +1,11 @@
-from app import create_file, display_file
+from app import create_file, display_file, edit_file
 import constants
 
 # UI
 while True:
     print("1. Create New File")
     print("2. View Files")
-    # print("3. Edit File")
+    print("3. Edit File")
     # print("4. Delete File")
     print("5. Exit")
 
@@ -13,52 +13,54 @@ while True:
 
     # Create file
     if choise == "1":
-        state = create_file()
-        if state == constants.STATUS_SAVE:
+        status = create_file()
+        if status == constants.STATUS_SAVE:
             print("** file saved successfully. **")
-        elif state == constants.DUPLICATE_NAME:
+        elif status == constants.DUPLICATE_NAME:
             print("** This name already exists. **")
-        elif state == constants.STATUS_BACK:
+        elif status == constants.STATUS_BACK:
             print("** You have returned to the previous menu. **")
-        elif state == constants.STATUS_EXIT:
+        elif status == constants.STATUS_EXIT:
             print("** You are out. **")
             break
-        elif state == constants.EMPTY_INPUT:
+        elif status == constants.EMPTY_INPUT:
             print("** You cannot leave the input blank! **")
         else:
-            print(f"** Unexpected status: {state} **")
+            print(f"** Unexpected status: {status} **")
 
     # Display files
     elif choise == "2":
-        state = display_file()
-        if state == constants.STATUS_OK:
+        status = display_file()
+        if status == constants.STATUS_OK:
             pass
-        elif state == constants.STATUS_BACK:
+        elif status == constants.STATUS_BACK:
             print("** You have returned to the previous menu. **")
-        elif state == constants.STATUS_EXIT:
+        elif status == constants.STATUS_EXIT:
             print("** You are out. **")
             break
-        elif state == constants.EMPTY_INPUT:
+        elif status == constants.EMPTY_INPUT:
             print("** You cannot leave the input blank! **")
-        elif state == constants.NOT_NUMBER:
+        elif status == constants.NOT_NUMBER:
             print("** Please enter a valid number. **")
-        elif state == constants.INVALID_INPUT:
+        elif status == constants.INVALID_INPUT:
             print("** Your choice is not in the list **")
 
-    # # Edit note
-    # elif choise == "3":
-
-    #     pure_names = get_list_files()
-    #     for i, file_name in enumerate(pure_names, start=1):
-    #         print(f"''{i}. {file_name}''")
-
-    #     file_name = select_file(pure_names)
-    #     print(f"Selected file: {file_name}")
-
-    #     if edit_file(file_name):
-    #         print(">> Note successfully edited. <<")
-    #     else:
-    #         print(">> Note edit failed. <<")
+    # Edit file
+    elif choise == "3":
+        status = edit_file()
+        if status == constants.STATUS_SAVE:
+            print("** The file was successfully edited. **")
+        elif status == constants.STATUS_BACK:
+            print("** You have returned to the previous menu. **")
+        elif status == constants.STATUS_EXIT:
+            print("** You are out. **")
+            break
+        elif status == constants.EMPTY_INPUT:
+            print("** You cannot leave the input blank! **")
+        elif status == constants.NOT_NUMBER:
+            print("** Please enter a valid number. **")
+        elif status == constants.INVALID_INPUT:
+            print("** Your choice is not in the list **")
 
     # # Delete note
     # elif choise == "4":
