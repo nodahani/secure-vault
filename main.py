@@ -1,4 +1,4 @@
-from app import create_file, display_file, edit_file
+from app import create_file, display_file, edit_file, delete_file
 import constants
 
 # UI
@@ -6,7 +6,7 @@ while True:
     print("1. Create New File")
     print("2. View Files")
     print("3. Edit File")
-    # print("4. Delete File")
+    print("4. Delete File")
     print("5. Exit")
 
     choise = input("What do you want to do...? ")
@@ -62,20 +62,24 @@ while True:
         elif status == constants.INVALID_INPUT:
             print("** Your choice is not in the list **")
 
-    # # Delete note
-    # elif choise == "4":
-    #     pure_names = get_list_files()
-    #     for i, file_name in enumerate(pure_names, start=1):
-    #         print(f"''{i}. {file_name}''")
-    #     file_name = select_file(pure_names)
-    #     if file_name:
-    #         if delete_file(file_name):
-    #             print("Note DELETED!")
-    #         else:
-    #             print("Cancelled")
-
-    #     else:
-    #         print(">> Please choose from the options. <<")
+    # Delete file
+    elif choise == "4":
+        status = delete_file()
+        if status == constants.STATUS_OK:
+            print("** The file was deleted. **")
+        elif status == constants.STATUS_BACK:
+            print("** You have returned to the previous menu. **")
+        elif status == constants.STATUS_CANCEL:
+            print("** File deletion was cancelled. **")
+        elif status == constants.STATUS_EXIT:
+            print("** You are out. **")
+            break
+        elif status == constants.EMPTY_INPUT:
+            print("** You cannot leave the input blank! **")
+        elif status == constants.NOT_NUMBER:
+            print("** Please enter a valid number. **")
+        elif status == constants.INVALID_INPUT:
+            print("** Your choice is not in the list **")
 
     # Exit
     elif choise == "5":

@@ -1,4 +1,5 @@
 import crypto
+import os
 import constants
 from ui import (
     getting_input_user,
@@ -102,20 +103,35 @@ def edit_file():
                 return constants.STATUS_SAVE
 
 
-# def delete_file(file_name):
-#     """Delete file.
+def delete_file():
+    """Delete file."""
+    # نمایش لیست فایل ها
+    # انتخاب فایل
+    # تایید گرفتن برای حذف
+    # اگه اکی داد حذف کن
+    # در غیر اینصورت حذف نکن
 
-#     Args:
-#         file_name (str): The name of the file to delete.
+    pure_names = get_list_files()
+    print(format_file_list(pure_names))
+    selected = select_file(
+        pure_names,
+        "Which file do you want to delete? Type 'back' to go back, or 'exit' to quit:\n",
+    )
 
-#     Returns:
-#         None
-#     """
+    if selected == constants.STATUS_BACK:
+        return constants.STATUS_BACK
+    elif selected == constants.STATUS_EXIT:
+        return constants.STATUS_EXIT
+    elif selected == constants.EMPTY_INPUT:
+        return constants.EMPTY_INPUT
+    elif selected == constants.NOT_NUMBER:
+        return constants.NOT_NUMBER
+    elif selected == constants.INVALID_INPUT:
+        return constants.INVALID_INPUT
 
-#     confirm = input(f"Delete {file_name}? (y/n): ")
-#     if confirm.lower() != "y":
-#         return False
-#     else:
-#         path = "./data/" + file_name + ".txt"
-#         os.remove(path)
-#         return True
+    confirm = input(f"Delete {selected}? (y/n): ")
+    if confirm.lower() != "y":
+        return constants.STATUS_CANCEL
+    else:
+        os.remove("./data/" + selected + ".txt")
+        return constants.STATUS_OK
