@@ -1,5 +1,4 @@
 import constants
-from file_manager import get_list_files
 
 
 def get_user_lines(message):

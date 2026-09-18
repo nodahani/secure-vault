@@ -56,7 +56,8 @@ def display_file():
     elif selected == constants.INVALID_INPUT:
         return constants.INVALID_INPUT
     else:
-        with open("./data/" + selected + ".txt", "r") as file:
+        name_encrypt = crypto.caesar_cipher(selected, constants.CIPHER_SHIFT)
+        with open("./data/" + name_encrypt + ".txt", "r") as file:
             text = file.read()
             result += crypto.caesar_cipher(text, -constants.CIPHER_SHIFT)
         print(f"***\n{result}\n***")
@@ -84,7 +85,9 @@ def edit_file():
     elif selected == constants.INVALID_INPUT:
         return constants.INVALID_INPUT
 
-    with open("./data/" + selected + ".txt", "r") as file:
+    name_encrypt = crypto.caesar_cipher(selected, constants.CIPHER_SHIFT)
+
+    with open("./data/" + name_encrypt + ".txt", "r") as file:
         lines = crypto.caesar_cipher(file.read(), -constants.CIPHER_SHIFT).splitlines()
         result, status = edit_lines_in_ui(
             lines,
@@ -98,18 +101,13 @@ def edit_file():
             return constants.STATUS_EXIT
         elif status == constants.STATUS_SAVE:
             text = "\n".join(result)
-            with open("./data/" + selected + ".txt", "w") as file:
+            with open("./data/" + name_encrypt + ".txt", "w") as file:
                 file.write(crypto.caesar_cipher(text, constants.CIPHER_SHIFT))
                 return constants.STATUS_SAVE
 
 
 def delete_file():
     """Delete file."""
-    # نمایش لیست فایل ها
-    # انتخاب فایل
-    # تایید گرفتن برای حذف
-    # اگه اکی داد حذف کن
-    # در غیر اینصورت حذف نکن
 
     pure_names = get_list_files()
     print(format_file_list(pure_names))
@@ -133,5 +131,6 @@ def delete_file():
     if confirm.lower() != "y":
         return constants.STATUS_CANCEL
     else:
-        os.remove("./data/" + selected + ".txt")
+        name_encrypt = crypto.caesar_cipher(selected, constants.CIPHER_SHIFT)
+        os.remove("./data/" + name_encrypt + ".txt")
         return constants.STATUS_OK
